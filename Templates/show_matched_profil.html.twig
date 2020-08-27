@@ -1,0 +1,186 @@
+{% extends 'base-online.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="Public/CSS/home_online.css" />
+{% endblock %}
+
+{% block body %}
+
+<div class="allpage d-flex justify-content-between" {% if profil is empty %}style="display: block !important;"{% endif %}>
+<div class="text-center card-show-profil show-match-profil" {% if profil is empty %}style="display: contents;"{% endif %}>
+    {% if profil %}
+        {% if profil.online == 1 %}
+            <img src="Public/Images/checked.png"><p>En ligne</p>
+        {% else %}
+            <img src="Public/Images/cancel.png"><p>Hors ligne - dernière connexion le {{ profil.logout_date | date("d/m/Y") }}</p>
+        {% endif %}
+        <img src="{{ profil.profile_picture_path }}" width="300" id="matched-photo">
+        {# <h1 class="display-4" style="margin-top: 10px;">{{ profil.firstname ~ ' ' ~ profil.lastname }}</h1> #}
+        <h1 class="display-4" style="margin-top: 10px;">{{ profil.dog_name }}</h1>
+
+
+        <div class="d-flex justify-content-center mb-3">
+            <p id="likes_number" style="margin-bottom: 0; margin-top: 3px;">{{ likes }}</p>
+            <img {% if already_liked == false %}
+                    src="Public/Images/love_black.png"
+                    onmouseout="this.src='Public/Images/love_black.png';" 
+                {% else %}
+                    src="Public/Images/love.png"
+                    onmouseout="this.src='Public/Images/love.png';" 
+            {% endif %} onmouseover="this.src='Public/Images/love.png';"  style="cursor: pointer; margin-left: 10px;" onclick="like_dislike()" name="{{ profil.id_user }}" id="like">
+        </div>
+
+        {% if did_like_me %}
+            <p style="color: green;">{{ profil.dog_name ~ ' vous a liké.' }}</p>
+        {% else %}
+            <p style="color: darkred;">{{ profil.dog_name ~ ' ne vous a pas encore liké.' }}</p>
+        {% endif %}
+
+
+        <p><span class="titlle-pre">Race:</span>{{ ' ' ~ breed }}</p>
+
+        <p><span class="titlle-pre">Sexe:</span> {% if profil.gender == 'male' %}
+            Mâle
+            {% else %}
+            Femelle
+        {% endif %}</p>
+        
+
+        <p><span class="titlle-pre">Age:</span>{% if profil.age >= 12 %}{% if profil.age == 12 %}{{ ' 1 an' }}{% else %}{{ ' ' ~ profil.age // 12 ~ ' ans' }}{% endif %}{% else %}{{ ' ' ~ profil.age ~ ' mois' }}{% endif %}</p>
+
+
+        <p><span class="titlle-pre">Recherche:</span> {% if profil.orientation == 'other_breed' %}
+            Une autre race
+            {% elseif profil.orientation == 'same_breed' %}
+            La même race
+            {% else %}
+            Toutes les races
+        {% endif %}</p>
+
+        <p><span class="titlle-pre">Ses caractéristiques:</span> {% for hashtag in hashtags %}
+            {{ '#' ~ hashtag.tag ~ ' ' }}
+        {% endfor %}.</p>
+
+        <p><span class="titlle-pre">Localisation:</span> {{ profil.city ~ ' - ' ~ profil.zipcode  ~ ', France.' }}</p>
+        
+        <p><span class="titlle-pre">Présentation:</span> {{ profil.biography ~ '.' }}</p>
+
+        <p><span class="titlle-pre">Nom d'utilisateur du maître:</span> {{ profil.username }}</p>
+
+        <hr class="my-4">
+        
+
+
+
+
+
+        <div style="margin-top: 30px; margin-bottom: 30px"><button class="btn btn-link report" data-toggle="modal" data-target="#reporting">Signaler ce compte comme étant un faux</button>
+        <small style="margin: 0;" class="form-text alert-small-message text-center">Un email sera envoyé a l'équipe admin de Dog's Matcha et le compte sera verifié.</small></div>
+
+        <div class="modal fade" id="reporting" tabindex="-1" role="dialog" aria-labelledby="reportingTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title black_font" id="reporting">Veuillez confirmez</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="black_font">Êtes-vous sur de vouloir signaler {{ profil.dog_name }} ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="reporting_account()" id="reporting-button" name="{{ profil.id_user }}">Signaler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Bloquer {{ profil.dog_name }}</button>
+        <small class="form-text alert-small-message text-center mt-3">Attention ! Une fois un utilisateur bloqué, vous ne pourrez plus le débloquer ni même avoir accès à son profil.</small>
+
+
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title black_font" id="exampleModalCenterTitle">Veuillez confirmez</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="black_font">Êtes-vous sur de vouloir bloquer {{ profil.dog_name }} ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="block_button" name="{{ profil.id_user }}">Bloquer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a id="user-photo" href="{{ photo_user_path }}" style="display: none;"></a>
+
+    <div class="chat-and-button text-center">
+        <button class="btn btn-danger" id="delete-all-messages" onclick="remove_all_chat_messages()">Supprimer les messages</button>
+        <div class="tchat-container">
+            <div class="messages" id="messages">
+            {% for message in all_chat_messages %}
+                {% if message.id_sender == id_user %}
+                    <div class="tchat">
+                        <img src="{{ photo_user_path }}" alt="Avatar" style="height: 60px;">
+                        <p>{{ message.message|raw }}</p>
+                        <span class="time-right">le {{ message.message_date | date("d/m/Y à H:i.") }}</span>
+                    </div>
+                {% else %}
+                     <div class="tchat darker">
+                        <img src="{{ profil.profile_picture_path }}" alt="Avatar" class="right" style="height: 60px;">
+                        <p>{{ message.message|raw }}</p>
+                        <span class="time-left">le {{ message.message_date | date("d/m/Y à H:i.") }}</span>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+            
+    
+            <div class="send-message d-flex justify-content-between">
+                <div class="form-group">
+                    <textarea class="form-control textarea-message" id="content-message" name="{{ id_user }}" rows="3" placeholder="Votre message (max: 255 caractères)"></textarea>
+                </div>
+                <div class="send-message-button">
+                    <button type="button" class="btn btn-primary button-chat" name="{{ profil.id_user }}" id="send-message-button" onclick="add_message_tchat()" disabled >Envoyer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+    <h1 class="display-4 text-center" style="margin-top: 10px;">Aucun profil correspondant</h1>
+{% endif %}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="Public/Javascript/get-notifications.js"></script>
+    {% if profil %}
+        <script src="Public/Javascript/like-dislike-match.js"></script>
+        <script src="Public/Javascript/add-message-tchat.js"></script>
+        <script src="Public/Javascript/block-user-match.js"></script>
+        <script src="Public/Javascript/reporting-account-match.js"></script>
+        <script src="Public/Javascript/add-notifications.js"></script>
+        <script src="Public/Javascript/get-chat-messages.js"></script>
+        <script src="Public/Javascript/notify-visit.js"></script>
+        <script src="Public/Javascript/remove-all-chat-messages.js"></script>
+    {% endif %}
+{% endblock %}

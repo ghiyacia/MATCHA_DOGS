@@ -1,0 +1,111 @@
+body {
+    background-image: url(../Images/heart-shadow.png), url(../Images/footprint-dog.png), url(../Images/footprint-dog.png),  linear-gradient(#34767F, #BFB1B1);
+    background-position: center, left, right;
+    background-size: auto, auto, auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.matcha-logo {
+    height: 100px;
+}
+
+.navbar {
+    padding-top: 0;
+    padding-bottom: 0;
+    height: 95px;
+    background-image: url(../Images/heart-shadow.png), linear-gradient(#41767D, #41767D);
+}
+
+
+.navbar-brand {
+    padding: 0;
+}
+
+
+.btn-outline-success{
+    color: rgb(206, 196, 182);
+    border-color: rgb(206, 196, 182);
+}
+
+.btn-outline-success:hover {
+    color: rgb(206, 196, 182);
+    background-color: rgb(223, 118, 134)
+}
+
+.btn-outline-success:focus {
+    color: rgb(206, 196, 182);
+    background-color: rgb(223, 118, 134)
+}
+
+.search-input {
+    background-color: rgb(233, 212, 216);
+}
+
+.search-input:focus {
+  background: rgb(231, 152, 164);
+}
+
+.card {
+    margin: 0 auto;
+}
+
+.text-color {
+    color: rgb(233, 221, 221);
+}
+
+.alert-small-message {
+    color: rgb(216, 17, 17);
+}
+
+.container {
+    margin-top: 175px;
+}
+
+.sorted-by {
+    width: 215px !important;
+    background-color: rgb(233, 212, 216);
+    margin-right: 10px;
+}
+
+.both-button {
+    font-size: 13px;
+}
+
+.option-select {
+    background-color: rgb(233, 212, 216);
+}
+
+
+@media all and (max-width: 1060px)
+{
+    body {
+        background-image: url(../Images/heart-shadow.png), url(../Images/footprint-dog.png), url(../Images/footprint-dog.png),  linear-gradient(#34767F, #BFB1B1);
+        background-position: center, left, right;
+        background-size: 100%, 50%, 50%, auto;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+}
+
+@media all and (max-width: 880px)
+{
+    body {
+        background-image: url(../Images/heart-shadow.png), url(../Images/footprint-dog.png), linear-gradient(#34767F, #BFB1B1);
+        background-position: center, center;
+        background-size: 100%, 60%, auto;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+}
+
+@media all and (max-width: 640px)
+{
+    body {
+        background-image: url(../Images/heart-shadow.png), url(../Images/footprint-dog.png), linear-gradient(#34767F, #BFB1B1);
+        background-position: center, left;
+        background-size: 130%, 90%, auto;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+}

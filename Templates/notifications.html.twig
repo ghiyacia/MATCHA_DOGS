@@ -1,0 +1,27 @@
+{% extends 'base-online.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="Public/CSS/home_online.css" />
+{% endblock %}
+
+{% block body %}
+
+    <div class="text-center mb-5">
+        <h1 class="display-4 mb-3" style="color: rgb(245, 226, 198);">Vos notifications</h1>
+        <button class="btn btn-danger mb-5" type="button" onclick="remove_notifications()">Supprimer mes notifications</button>
+    </div>
+    <div class="row" id="notifications-div" style="margin-bottom: 100px;">
+        {% for notification in notifications %}
+        <div class="alert alert-primary col-sm-12 col-md-12 col-lg-12 col-xl-12" role="alert">{{ notification.notification | raw }} le {{ notification.notification_date | date("d/m/Y à H:i.")}}</div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="Public/Javascript/remove-visits.js"></script>
+    <script src="Public/Javascript/remove-notifications.js"></script>
+    <script src="Public/Javascript/get-current-notifications.js"></script>
+{% endblock %}

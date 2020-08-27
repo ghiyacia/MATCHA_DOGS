@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="Public/CSS/home.css" />
+{% endblock %}
+
+{% block title %}Dog's Matcha{% endblock %}
+
+{% block body %}
+   
+
+
+
+    <nav class="navbar navbar-expand-sm-md-lg-xl navbar-pers">
+        <a class="navbar-brand link-logo" href="index.php?page=home"><img src="Public/Images/logo2.png" class="logo-img" style="display: none;"></a>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="index.php?page=login" type="button" class="btn btn-outline-secondary connect-button">Se connecter</a>
+          </li>
+        </ul>
+      </nav>
+      
+    <div class="container container-pers margin-block">
+        {% if success_message is not empty %}
+            {{ success_message | raw }}
+        {% endif %}
+        {% if failure_message is not empty %}
+            {{ failure_message | raw }}
+        {% endif %}
+        <a href="index.php?page=home"><img src="Public/Images/logo.png" style="width: 315px; margin-bottom: 15px !important; display:flex; margin: auto"></a>
+        <form method="POST" action="index.php?page=home">
+            <div class="form-group">
+
+
+            <input name="lastname" id="lastname" class="form-control form-control-sm color-input" type="text" placeholder="Nom de famille"
+            {% if temporary_lastname is not empty %}
+                value="{{ temporary_lastname }}"
+            {% endif %}>
+
+                {% if lastname_message_alert is not empty %}
+                    <small class="form-text alert-small-message">{{ lastname_message_alert }}</small>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <input name="firstname" id="firstname" class="form-control form-control-sm color-input" type="text" placeholder="Prénom"
+                {% if temporary_firstname is not empty %}
+                    value="{{ temporary_firstname }}"
+                {% endif %}>
+
+                {% if firstname_message_alert is not empty %}
+                    <small class="form-text alert-small-message">{{ firstname_message_alert }}</small>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <input name="email" id="email" class="form-control form-control-sm color-input" type="email" placeholder="Email"
+                {% if temporary_email is not empty %}
+                    value="{{ temporary_email }}"
+                {% endif %}>
+
+                {% if email_exist_message_alert is not empty %}
+                <small class="form-text alert-small-message">{{ email_exist_message_alert }}</small>
+                {% elseif email_message_alert is not empty %}
+                <small class="form-text alert-small-message">{{ email_message_alert }}</small>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <input name="username" id="username" class="form-control form-control-sm color-input" type="text" placeholder="Nom d'utilisateur"
+                {% if temporary_username is not empty %}
+                    value="{{ temporary_username }}"
+                {% endif %}>
+
+                {% if username_exist_message_alert is not empty %}
+                <small class="form-text alert-small-message">{{ username_exist_message_alert }}</small>
+                {% elseif username_message_alert is not empty %}
+                <small class="form-text alert-small-message">{{ username_message_alert }}</small>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <input name="password" id="password" class="form-control form-control-sm color-input" type="password" placeholder="Mot de passe *"
+                {% if temporary_password is not empty %}
+                value="{{ temporary_password }}"
+                {% endif %}>
+
+                {% if password_message_alert is not empty %}
+                    <small class="form-text alert-small-message">{{ password_message_alert }}</small>
+                {% endif %}
+            </div>
+
+
+            <div class="form-group">
+                <input name="password_confirm" id="password_confirm" class="form-control form-control-sm color-input" type="password" placeholder="Confirmation mot de passe"
+                {% if temporary_confirm_password is not empty %}
+                    value="{{ temporary_confirm_password }}"
+                {% endif %}>
+
+                {% if password_confirm_message_alert is not empty %}
+                    <small class="form-text alert-small-message">{{ password_confirm_message_alert }}</small>
+                {% endif %}
+                <small class="form-text text-muted">* Le mot de passe doit contenir 6 caractères minimum.<br/>(Une majuscule, une minuscule, un chiffre et un caractère spécial).</small>
+            </div>
+
+            
+            <button name="registration_button" id="registration_button" type="submit" class="btn btn-primary btn-block signup-button" disabled>S'inscrire</button>
+        </form>
+        <div class="text-center mt-4 mb-5">
+            <a href="index.php?page=login" class="btn-link link-connect">Déjà inscrit ? Cliquez ici pour vous connecter.</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="Public/Javascript/forms/form-registration.js"></script>
+{% endblock %}

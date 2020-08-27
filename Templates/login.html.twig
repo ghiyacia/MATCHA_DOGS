@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="Public/CSS/home.css" />
+{% endblock %}
+
+{% block title %}Dog's Matcha{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-sm-md-lg-xl navbar-pers">
+        <a class="navbar-brand link-logo" href="index.php?page=home"><img src="Public/Images/logo2.png" class="logo-img" style="display: none;"></a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+            <a href="index.php?page=home" class="btn btn-outline-secondary connect-button">S'inscrire</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container container-pers margin-block">
+            {% if failure_message is not empty %}
+                {{ failure_message | raw }}
+            {% endif %}
+
+            {% if success_message is not empty %}
+                {{ success_message | raw }}
+            {% endif %}
+        <!-- <p class="tittle-presentation">Se connecter à Dog's Matcha</p> -->
+        <a href="index.php?page=home"><img src="Public/Images/logo.png" style="width: 315px; margin-bottom: 15px !important; display:flex; margin: auto"></a>
+        <form method="POST" action="index.php?page=login">
+            <div class="form-group">
+                <input name="username_mail" id="username-email-connect" class="form-control form-control-sm color-input" type="text" placeholder="Adresse email ou nom d'utilisateur"
+                {% if temporary_login is not empty %}
+                    value="{{ temporary_login }}"
+                {% endif %}>
+            </div>
+            <div class="form-group">
+                <input name="password_user" id="password-connect" class="form-control form-control-sm color-input" type="password" placeholder="Mot de passe"
+                {% if temporary_password is not empty %}
+                    value="{{ temporary_password }}"
+                {% endif %}>
+
+                {% if failure_log_message is not empty %}
+                    <small class="form-text alert-small-message">{{ failure_log_message }}</small>
+                {% endif %}
+            </div>
+            <button name="connection-button" id="signin-button" type="submit" class="btn btn-primary btn-block signup-button" disabled>Connexion</button>
+        </form>
+        <div class="text-center mt-4 mb-5">
+            <a href="index.php?page=get_email" class="btn-link link-connect">Mot de passe oublié ?</a>
+          </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="Public/Javascript/forms/form-login.js"></script>
+{% endblock %}

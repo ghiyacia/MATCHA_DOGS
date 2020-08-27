@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dog's Matcha</title>
+        <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" />
+        <link rel="stylesheet" href="Public/CSS/navbar.css" />
+    </head>
+    <body>
+        <div class="container mt-5">
+            {% if empty_alert is not empty %}
+                <small class="form-text alert-small-message text-center">{{ empty_alert | raw }}</small>
+            {% endif %}
+            {% if invalid_address is not empty %}
+                <small class="form-text alert-small-message text-center">{{ invalid_address | raw }}</small>
+            {% endif %}
+            {% if failure is not empty %}
+                <small class="form-text alert-small-message text-center">{{ failure | raw }}</small>
+            {% endif %}
+            <a class="nav-link text-center" href="logout.php" style="margin-bottom: 10px;"><img src="Public/Images/turn-off.png" class="logout-img" onmouseover="this.src='Public/Images/stand-by-2.png';" onmouseout="this.src='Public/Images/turn-off.png';" style="margin-top: 4px; margin-left: 4px;"></a>
+            <h3 class="text-center text-color">Veuillez finir de compléter les informations de votre animal</h3>
+            <h5 class="text-center text-color">nécessaires pour avoir pleinement accés à votre compte.</h5>
+            <small class="form-text alert-small-message text-center">*Tous les champs sont obligatoires</small>
+            <div class="container mt-5">
+                <form method="POST" action="online.php?page=complete_info" enctype="multipart/form-data">
+                    <div class="card text-center search-input" style="width: 18rem;">
+                        <img src="Public/Images/profile.png" class="card-img-top" id="profile-image" style="background-color: aliceblue; border: 2px solid rgb(233, 212, 216); border-radius: 23px;">
+                        <div class="card-body">
+                            <button class="btn btn-primary" type="button" id="choose-file-button">Choisir une photo de profil</button>
+                            {% if photo_profile_alert is not empty %}
+                                <small class="form-text alert-small-message text-center">{{ photo_profile_alert }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input name="profile-picture" type="file" class="form-control-file" id="choose-file-real" style="visibility: hidden;">
+                    </div>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0 text-color">Sexe</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input search-input" type="radio" name="gender" id="male" value="male"  checked>
+                                    <label class="form-check-label text-color" for="male">
+                                    Mâle
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input search-input" type="radio" name="gender" id="female" value="female" 
+                                    {% if gender == 'female' %}
+                                        checked
+                                    {% endif %}>
+                                    <label class="form-check-label text-color" for="female">
+                                    Femelle
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    {% if gender_alert is not empty %}
+                        <small class="form-text alert-small-message text-center">{{ gender_alert }}</small>
+                    {% endif %}
+                    <fieldset class="form-group">
+                        <div class="row mt-5">
+                            <legend class="col-form-label col-sm-2 pt-0 text-color">Recherche</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input class="form-check-input search-input" type="radio" name="orientation" id="all_breed" value="all_breed" checked>
+                                    <label class="form-check-label text-color" for="all_breeds">
+                                    Toutes les races
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input search-input" type="radio" name="orientation" id="same_breed" value="same_breed"
+                                    {% if orientation == 'same_breed' %}
+                                        checked
+                                    {% endif %}>
+                                    <label class="form-check-label text-color" for="same_breed">
+                                    La même race
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input search-input" type="radio" name="orientation" id="other_breed" value="other_breed"
+                                    {% if orientation == 'other_breed' %}
+                                        checked
+                                    {% endif %}>
+                                    <label class="form-check-label text-color" for="other_breed">
+                                    Une autre race
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    {% if orientation_alert is not empty %}
+                        <small class="form-text alert-small-message text-center">{{ orientation_alert }}</small>
+                    {% endif %}
+                    <div class="form-group mt-5">
+                        <label class="text-color" for="dog_name">Nom du chien</label>
+                        <input name="dog_name" type="text" class="form-control search-input" id="dog_name" placeholder="Son nom"
+                        {% if dog_name is not empty %}
+                            value="{{ dog_name }}"
+                        {% endif %}>
+                        {% if dog_name_alert is not empty %}
+                            <small class="form-text alert-small-message text-center">{{ dog_name_alert }}</small>
+                        {% endif %}
+                    </div>
+                    <label class="my-1 mr-2 text-color mt-3" for="age">Age</label>
+                    <select class="custom-select my-1 mr-sm-2 search-input" id="age" name="age">
+                        <option selected>Son age</option>
+                        {% set i = 1 %}
+                        {% set a = 0 %}
+                        {% for i in 1..240 %}
+                            {% if (i < 12) or  (i >= 12 and (i // 12) != a) %}
+                                <option value="{{ i }}"
+                                {% if age == i %}
+                                    selected
+                                {% endif %}>{% if i >= 12 %}{% if i == 12 %}{{ '1 an' }}{% else %}{{ i // 12 ~ ' ans' }}{% endif %}{% elseif i < 12 %}{{ i ~ ' mois' }}{% endif %}</option>
+                                {% set a = i // 12 %}
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% if age_alert is not empty %}
+                        <small class="form-text alert-small-message text-center">{{ age_alert }}</small>
+                    {% endif %}
+                    <label class="my-1 mr-2 text-color mt-3" for="breed">Race</label>
+                    <select class="custom-select my-1 mr-sm-2 search-input" id="breed" name="breed">
+                        <option selected>Sa race</option>
+                        {% for key, value in dogs_breed %}
+                            <option value="{{ key }}"
+                            {% if breed == key %}
+                                selected
+                            {% endif %}>{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if breed_alert is not empty %}
+                        <small class="form-text alert-small-message text-center">{{ breed_alert }}</small>
+                    {% endif %}
+                    <div class="form-group mt-5">
+                        <label class="text-color" for="address">Adresse</label>
+                        <input name="address" type="text" class="form-control search-input" id="address" placeholder="Ex: 35 Avenue des Champs-Élysées"
+                        {% if address is not empty %}
+                            value="{{ address }}"
+                        {% endif %}>
+                        {% if address_alert is not empty %}
+                            <small class="form-text alert-small-message text-center">{{ address_alert }}</small>
+                        {% endif %}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                        <label class="text-color" for="city">Ville</label>
+                        <input name="city" type="text" class="form-control search-input" id="city" placeholder="Ex: Paris" 
+                        {% if city is not empty %}
+                            value="{{ city }}"
+                        {% endif %}>
+                        {% if city_alert is not empty %}
+                            <small class="form-text alert-small-message text-center">{{ city_alert }}</small>
+                        {% endif %}
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="text-color" for="state">Pays</label>
+                            <select name="state" id="state" class="form-control search-input">
+                                <option value="france" selected>France</option>
+                            </select>
+                        </div>
+                        {% if state_alert is not empty %}
+                            <small class="form-text alert-small-message text-center">{{ state_alert }}</small>
+                        {% endif %}
+                        <div class="form-group col-md-2">
+                        <label class="text-color" for="zip">Code Postal</label>
+                        <input name="zip" type="text" class="form-control search-input" id="zip" placeholder="Ex: 75008"
+                        {% if zip is not empty %}
+                            value="{{ zip }}"
+                        {% endif %}>
+                        {% if zip_alert is not empty %}
+                            <small class="form-text alert-small-message text-center">{{ zip_alert }}</small>
+                        {% endif %}
+                        </div>
+                    </div>
+                    <div class="text-center mt-5">
+                        <h3 class="text-center text-color mb-3">Ses caractéristiques</h3>
+                        <div class="form-check form-check-inline ">
+                            <input class="form-check-input search-input" type="checkbox" name="joueur" id="joueur" value="joueur"
+                            {% if joueur is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="joueur">#joueur</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input search-input" type="checkbox" name="energique" id="energique" value="energique" 
+                            {% if energique is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="energique">#énergique</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input search-input" type="checkbox" name="gourmand" id="gourmand" value="gourmand"
+                            {% if gourmand is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="gourmand">#gourmand</label>
+                        </div>
+                        <div class="form-check form-check-inline ">
+                            <input class="form-check-input search-input" type="checkbox" name="calineur" id="calineur" value="calineur"
+                            {% if calineur is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="calineur">#câlineur</label>
+                        </div>
+                        <div class="form-check form-check-inline ">
+                            <input class="form-check-input search-input" type="checkbox" name="protecteur" id="protecteur" value="protecteur"
+                            {% if protecteur is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="protecteur">#protecteur</label>
+                        </div>
+                        <div class="form-check form-check-inline ">
+                            <input class="form-check-input search-input" type="checkbox" name="obeissant" id="obeissant" value="obeissant"
+                            {% if obeissant is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="obeissant">#obéissant</label>
+                        </div>
+                        <div class="form-check form-check-inline ">
+                            <input class="form-check-input search-input" type="checkbox" name="paresseux" id="paresseux" value="paresseux"
+                            {% if paresseux is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="paresseux">#paresseux</label>
+                        </div>
+                        <div class="form-check form-check-inline ">
+                            <input class="form-check-input search-input" type="checkbox" name="casanier" id="casanier" value="casanier"
+                            {% if casanier is not empty %}
+                                checked
+                            {% endif %}>
+                            <label class="form-check-label text-color" for="casanier">#casanier</label>
+                        </div>
+                    </div>
+                    {% if checked_alert is not empty %}
+                        <small class="form-text alert-small-message text-center">{{ checked_alert }}</small>
+                    {% endif %}
+                    <div class="form-group mt-5 ">
+                        <label class=" text-color" for="presentation">Sa présentation</label>
+                        <textarea class="form-control search-input" name="presentation" id="presentation" rows="3" placeholder="255 caractères maximum..." >{% if presentation is not empty %} {{ presentation }} {% endif %}</textarea>
+                        {% if presentation_alert is not empty %}
+                            <small class="form-text alert-small-message text-center">{{ presentation_alert }}</small>
+                        {% endif %}
+                    </div>
+                    <button type="submit" name="save_information" id="save_information" class="btn btn-primary btn-lg btn-block mt-5 mb-5">Enregistrer</button>
+                </form>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="Public/Javascript/forms/complete-info.js"></script>
+    </body>
+</html>

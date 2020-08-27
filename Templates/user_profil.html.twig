@@ -1,0 +1,46 @@
+{% extends 'base-online.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="Public/CSS/home_online.css" />
+{% endblock %}
+
+{% block body %}
+
+
+{% if success_message is not empty %}
+    {{ success_message | raw }}
+{% endif %}
+
+
+<div class="card" style="width: 330px;">
+    <img class="card-img-top" src="{{ user_img }}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title text-center">{{ user_dog_name }}</h5>
+      <p class="card-text"><span class="titlle-pre">Presentation:</span> {{ user_presentation }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><span class="titlle-pre">Sexe:</span> {% if user_gender == 'male' %} Mâle {% else %} Femelle {% endif %}</li>
+      <li class="list-group-item"><span class="titlle-pre">Râce:</span> {{ user_breed }}</li>
+      <li class="list-group-item"><span class="titlle-pre">Recherche:</span> {% if user_orientation == 'all_breed' %} Toutes les races {% elseif user_orientation == 'same_breed' %} La même race {% else %} Une autre race {% endif %}</li>
+      <li class="list-group-item"><span class="titlle-pre">Âge:</span> {% if user_age >= 12 %}{% if user_age == 12 %}{{ '1 an' }}{% else %}{{ user_age // 12 ~ ' ans' }}{% endif %}{% else %}{{ user_age ~ ' mois' }}{% endif %}</li>
+      <li class="list-group-item"><span class="titlle-pre">Ses caractéristiques:</span><br/>{% for hashtag in user_hashtags %}- #{{ hashtag.tag }}<br/>{% endfor %}</li>
+      <li class="list-group-item"><span class="titlle-pre">Adresse complète:</span> {{ user_address ~ ', ' ~ user_zipcode ~ ' - ' ~  user_city ~ ', France.' }}</li>
+      <h3 style="text-align: center;">Votre compte</h1>
+        <li class="list-group-item"><span class="titlle-pre">Prénom:</span> {{ user_firstname }}</li>
+      <li class="list-group-item"><span class="titlle-pre">Nom:</span> {{ user_lastname }}</li>
+      <li class="list-group-item"><span class="titlle-pre">Nom d'utilisateur:</span> {{ user_username }}</li>
+      <li class="list-group-item"><span class="titlle-pre">Email:</span> {{ user_email }}</li>
+      <li class="list-group-item"><span class="titlle-pre">Mot de passe:</span> *************</li>
+    </ul>
+    <div class="card-body d-flex flex-column">
+      <a href="online.php?page=edit_profil" class="card-link mb-2">Modifier mes informations</a>
+      <a href="online.php?page=edit_password" class="card-link" style="margin: 0;">Modifier mon mot de passe</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="Public/Javascript/get-notifications.js"></script>
+{% endblock %}

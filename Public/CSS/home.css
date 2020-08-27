@@ -1,0 +1,115 @@
+body { 
+  background-image: url(../Images/footprint-dog.png), url(../Images/black-heart.png), url(../Images/dog-run.png), url(../Images/dog-wait.png), linear-gradient(#34767F, #BFB1B1) /*linear-gradient(#5d6061, #f3ebeb) linear-gradient(#34767F, #BFB1B1)*/;
+  background-position: left top, 100% 3%, 0% 45%, 100% 45%;
+  background-size: auto, 440px, 380px, 350px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+
+.logo-img {
+  height: 140px;
+  margin-top: 0px;
+}
+
+.link-logo {
+  height: 110px;
+  padding-top: 0;
+}
+
+.navbar-pers {
+  padding-top: 0;
+}
+
+.color-input {
+    background-color: rgb(233, 212, 216);
+}
+
+.color-input:focus {
+  background: rgb(231, 152, 164)
+}
+
+.connect-button {
+  border-radius: 20px;
+  color: rgb(206, 196, 182);
+  border-color: rgb(206, 196, 182);
+}
+
+.connect-button:hover {
+  color: rgb(206, 196, 182);
+  background-color: rgb(223, 118, 134)
+}
+
+.navbar-touch {
+  height: 86px;
+}
+
+/* .margin-block {
+  margin-top: 50px;
+} */
+
+.tittle-presentation {
+  font-size: 50px;
+  color: rgb(236, 234, 215);
+  border: 1px rgb(236, 234, 215) solid;
+  border-radius: 13px;
+  font-family: Georgia, serif;
+  text-align: center;
+}
+
+.link-connect {
+  color: rgb(66, 107, 218);
+}
+
+.signup-button:disabled {
+  background-color: rgb(165, 205, 243);
+  border: rgb(165, 205, 243);
+}
+
+.signup-button:disabled:hover {
+  cursor: initial;
+}
+
+/* .navbar-collapse.collapse{
+  display: block !important;
+} */
+
+.success-message {
+  font-size: 1.2rem;
+}
+
+.alert-small-message {
+  color: rgb(216, 17, 17);
+}
+
+@media all and (min-width: 667px)
+{
+  .container-pers {
+    width: 500px;
+  }
+}
+
+
+@media all and (max-width: 760px)
+{
+  body {
+    background-image: url(../Images/footprint-dog.png), url(../Images/footprint-dog.png), linear-gradient(#34767F, #BFB1B1);
+    background-color: rgba(0, 0, 0, 0.158)0, 0, 0, 0.055;
+    background-position: left top, right;
+    background-size: 30%, 30%, auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+}
+
+@media all and (min-width: 760px) and (max-width: 960px)
+{
+  body { 
+    background-image: url(../Images/footprint-dog.png), url(../Images/black-heart.png), url(../Images/dog-run.png), url(../Images/dog-wait.png), linear-gradient(#34767F, #BFB1B1) /*linear-gradient(#5d6061, #f3ebeb) linear-gradient(#34767F, #BFB1B1)*/;
+    background-position: 0% 10%, 100% 10%, 0% 37%, 100% 37%;
+    background-size: 40%, 320px, 280px, 250px, auto;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+}

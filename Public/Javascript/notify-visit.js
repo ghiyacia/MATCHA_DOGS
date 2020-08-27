@@ -1,0 +1,1 @@
+add_notification(like.name, 1, 0);

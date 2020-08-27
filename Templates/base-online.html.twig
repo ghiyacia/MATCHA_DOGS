@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <title>Dog's Matcha</title>
+        <link rel="stylesheet" href="Public/CSS/bootstrap.min.css" />
+        <link rel="stylesheet" href="Public/CSS/navbar.css" />
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow">
+            <a class="navbar-brand" href="online.php"><img src="Public/Images/logo.png" class="matcha-logo" style="padding-top: 7px; padding-bottom: 7px;"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item {% if current_page_selected == 'home' or current_page_selected == 'show_profil' %} active{% endif %}">
+                        <a class="nav-link link-nav-on-reduc border-top-left-radius" href="online.php">Accueil<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item {% if current_page_selected == 'match' %} active{% endif %}">
+                        <a class="nav-link link-nav-on-reduc" href="online.php?page=match">Mes Matches</a>
+                    </li>
+                    <li class="nav-item {% if current_page_selected == 'notifications' %} active{% endif %}">
+                        <a class="nav-link link-nav-on-reduc" href="online.php?page=notifications">Notifications<span class="badge badge-light badge-notif" id="notifications-number" {% if unreads_notifications == 0 %}style="display: none;"{% endif %}>{{ unreads_notifications }}</span></a>
+                    </li>
+                    <li class="nav-item {% if current_page_selected == 'historical' %} active{% endif %}">
+                        <a class="nav-link link-nav-on-reduc" href="online.php?page=historical">Historique</a>
+                    </li>
+                    <li class="nav-item {% if current_page_selected == 'user_profil' %} active{% endif %}">
+                        <a class="nav-link link-nav-on-reduc" href="online.php?page=user_profil">Profil</a>
+                    </li>
+                    <li class="nav-item logout-on-reduc  {% if current_page_selected == 'user_profil' %} active{% endif %}">
+                        <a class="nav-link" href="logout.php" style="display: unset;"><img src="Public/Images/turn-off.png" class="logout-img" onmouseover="this.src='Public/Images/stand-by-2.png';" onmouseout="this.src='Public/Images/turn-off.png';" style="margin-top: 4px; margin-left: 4px;"></a>
+                    </li>
+                </ul>
+                {% if current_page_selected == 'home' %}
+                    <button id='search_profil' class="btn btn-outline-success my-2 my-sm-0 both-button button-on-reduc" onclick='show_search()' style="margin-right: 10px; width: 146px">Recherche Avancée</button>
+                    <button id='use_filter' class="btn btn-outline-success my-2 my-sm-0 both-button button-on-reduc" onclick='show_filter()' style="width: 168px">Filtrer mes suggestions</button>
+                {% endif %}
+            </div>
+        </nav>
+        <!-- Detailed research form -->
+        <div id="search" class="form search-div" style="display: none;">
+            <form action="online.php" method="POST">
+                <div class="form-group-on-reduc">
+                    <select name='age' class="form-control option-select select-search">
+                        <option>Sélectionner l'âge</option>
+                        <option value="1">Entre 1 - 11 mois</option>
+                        <option value="2">Entre 1 - 3 ans</option>
+                        <option value="3">Entre 4 - 7 ans</option>
+                        <option value="4">+ de 7 ans</option>
+                    </select>
+                </div>
+                <div class="form-group-on-reduc">
+                    <select name='breed' class="form-control option-select select-search">
+                        <option value="0">Sélectionner une race</option>
+                        {% for key, value in breeds_search %}
+                            <option value="{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group-on-reduc">
+                    <select name='tags' class="form-control option-select select-search">
+                        <option>Sélectionner un tag</option>
+                        <option value="joueur">#joueur</option>
+                        <option value="energique">#énergique</option>
+                        <option value="gourmand">#gourmand</option>
+                        <option value="calineur">#câlineur</option>
+                        <option value="protecteur">#protecteur</option>
+                        <option value="obeissant">#obéissant</option>
+                        <option value="paresseux">#paresseux</option>
+                        <option value="casanier">#casanier</option>
+                    </select>
+                </div>
+                <div class="form-group-on-reduc">
+                    <select name='cities' class="form-control option-select select-search">
+                        <option value="0">Sélectionner une ville</option>
+                        {% for city in cities %}
+                            <option value="{{ city }}">{{ city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group-on-reduc">
+                    <select name='likes' class="form-control option-select select-search">
+                        <option>Sélectionner une popularité</option>
+                        <option value="1">Entre 0 - 100 Likes</option>
+                        <option value="2">Entre 100 - 250 Likes</option>
+                        <option value="3">Entre 250 - 500 Likes</option>
+                        <option value="4">+ de 500 Likes</option>
+                    </select>
+                </div>
+                <div class="form-group-on-reduc">
+                    <select name='sort_by' class="form-control option-select select-search">
+                        <option>Trier par</option>
+                        <option value="sort_age">Age</option>
+                        <option value="sort_distance">Distance</option>
+                        <option value="sort_popularity">Popularité</option>
+                        <option value="sort_tags">Tags</option>
+                    </select>
+                </div>
+                <button class="btn btn-outline-success my-2 my-sm-0 button-on-reduc" type="submit" name="detailed-button">Rechercher</button>
+            </form>
+        </div>
+        <div id='filter_search' class="search-div" style="display: none;">
+            <form action="online.php" method="POST">
+                <div class="form-group-on-reduc">
+                    <select name='suggestion-sorted' class="form-control option-select select-search">
+                        <option>Trier par</option>
+                        <option value="sort_age">Age</option>
+                        <option value="sort_distance">Distance</option>
+                        <option value="sort_popularity">Popularité</option>
+                        <option value="sort_tags">Tags</option>
+                    </select>
+                </div>
+                <button class="btn btn-outline-success my-2 my-sm-0 button-on-reduc" type="submit" name="sorted-button">Rechercher</button>
+            </form>
+        </div>
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

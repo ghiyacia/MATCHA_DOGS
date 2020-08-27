@@ -1,0 +1,6 @@
+{
+    "require": {
+        "twig/twig": "^2.12",
+        "fzaninotto/faker": "^1.9"
+    }
+}

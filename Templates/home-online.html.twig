@@ -1,0 +1,38 @@
+{% extends 'base-online.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="Public/CSS/home_online.css" />
+{% endblock %}
+
+{% block body %}
+
+    {% if admins %}
+        <div class="row">
+            {% for admin in admins %}
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ admin.profile_picture_path }}" style="height: 300px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title"><span style="font-weight: bold;">Nom: </span>{{ admin.dog_name }}</h5>
+                            <hr class="my-4">
+                            <p class="card-text" style="height: 48px;"><span style="font-weight: bold;">Race: </span> {{ dogs_breed[admin.breed] }}</p>
+                            <p class="card-text"><span style="font-weight: bold;">Âge: </span>{% if admin.age >= 12 %}{% if admin.age == 12 %}{{ '1 an' }}{% else %}{{ admin.age // 12 ~ ' ans' }}{% endif %}{% else %}{{ admin.age ~ ' mois' }}{% endif %}</p>
+                            <p class="card-text"><span style="font-weight: bold;">Description: </span> {{ admin.biography|length > 50 ? admin.biography|slice(0, 40) ~ '...' : myentity.text  }}</p>
+                            <a href="online.php?page=show_profil&id={{ admin.id_user }}" class="btn btn-primary ">Voir le profil</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 class="display-4 text-center" style="margin-top: 10px; color: rgb(245, 226, 198);">Aucun profil correspondant</h1>
+    {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="Public/Javascript/get-notifications.js"></script>
+    <script src="Public/Javascript/showsearch.js"></script>
+
+{% endblock %}
